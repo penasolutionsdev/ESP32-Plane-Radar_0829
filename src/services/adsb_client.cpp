@@ -226,7 +226,11 @@ bool fetchUpdate(double center_lat, double center_lon, float fetch_radius_km) {
     Serial.println("adsb: http.begin failed");
     return false;
   }
-
+  
+  // --- ADD THIS LINE TO FORCE HTTP/1.0 ---
+  http.useHTTP10(true); 
+  // ---------------------------------------
+  
   http.setTimeout(kRequestTimeoutMs);
   const int code = performGetWithPoll(http);
   if (code != HTTP_CODE_OK) {
