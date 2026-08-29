@@ -52,10 +52,10 @@ bool readResponseBodyWithPoll(HTTPClient& http, String& payload) {
     return false;
   }
 
-  const int content_length = http.getSize();
-  if (content_length > 0) {
-    payload.reserve(static_cast<unsigned>(content_length + 1));
-  }
+  //const int content_length = http.getSize();
+  //if (content_length > 0) {
+  //  payload.reserve(static_cast<unsigned>(content_length + 1));
+  //}
 
   uint8_t buffer[512];
   const unsigned long deadline = millis() + kRequestTimeoutMs;
@@ -72,11 +72,14 @@ bool readResponseBodyWithPoll(HTTPClient& http, String& payload) {
                        static_cast<unsigned>(read_bytes));
       }
     }
-    if (content_length > 0 &&
-        static_cast<int>(payload.length()) >= content_length) {
-      break;
-    }
-    if (!http.connected() && stream->available() <= 0) {
+    //if (content_length > 0 &&
+    //    static_cast<int>(payload.length()) >= content_length) {
+    //  break;
+    //}
+    //if (!http.connected() && stream->available() <= 0) {
+    //  break;
+    //}
+    if (http.getSize() == 0 || (!http.connected() && stream->available() <= 0)) {
       break;
     }
     delay(1);
